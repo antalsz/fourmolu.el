@@ -1,9 +1,9 @@
-;;; ormolu.el --- Format Haskell source code using the "ormolu" program -*- lexical-binding: t -*-
+;;; fourmolu.el --- Format Haskell source code using the "fourmolu" program -*- lexical-binding: t -*-
 
-;; Author: Vasiliy Yorkin <vasiliy.yorkin@gmail.com>
-;; Maintainer: Vasiliy Yorkin
+;; Author: Antal Spector-Zabusky <antal.b.sz@gmail.com>
+;; Maintainer: Antal Spector-Zabusky
 ;; Version: 0.2.0-snapshot
-;; URL: https://github.com/vyorkin/ormolu.el
+;; URL: https://github.com/antalsz/fourmolu.el
 ;; Keywords: files, tools
 ;; Package-Requires: ((emacs "24") (reformatter "0.4"))
 
@@ -24,53 +24,56 @@
 
 ;;; Commentary:
 
-;; Provides a minor mode and commands for easily using the "ormolu"
+;; Provides a minor mode and commands for easily using the "fourmolu"
 ;; program to reformat Haskell code.
+;;
+;; Based on Vasily Yorkin's "ormolu.el"
+;; (https://github.com/vyorkin/ormolu.el).
 
 ;;; Code:
 
 (require 'reformatter)
 
-(defgroup ormolu nil
-  "Integration with the \"ormolu\" formatting program."
-  :prefix "ormolu-"
+(defgroup fourmolu nil
+  "Integration with the \"fourmolu\" formatting program."
+  :prefix "fourmolu-"
   :group 'haskell)
 
-(defcustom ormolu-process-path "ormolu"
-  "Location where the ormolu executable is located."
-  :group 'ormolu
+(defcustom fourmolu-process-path "fourmolu"
+  "Location where the fourmolu executable is located."
+  :group 'fourmolu
   :type 'string
   :safe #'stringp)
 
-(defcustom ormolu-extra-args '()
-  "Extra arguments to give to ormolu."
-  :group 'ormolu
+(defcustom fourmolu-extra-args '()
+  "Extra arguments to give to fourmolu."
+  :group 'fourmolu
   :type 'sexp
   :safe #'listp)
 
-(defcustom ormolu-no-cabal nil
+(defcustom fourmolu-no-cabal nil
   "Whether to use the --no-cabal flag."
-  :group 'ormolu
+  :group 'fourmolu
   :type 'boolean
   :safe #'booleanp)
 
-(defvar ormolu-mode-map (make-sparse-keymap)
-  "Local keymap used for `ormolu-format-on-save-mode`.")
+(defvar fourmolu-mode-map (make-sparse-keymap)
+  "Local keymap used for `fourmolu-format-on-save-mode`.")
 
-;;;###autoload (autoload 'ormolu-format-buffer "ormolu" nil t)
-;;;###autoload (autoload 'ormolu-format-region "ormolu" nil t)
-;;;###autoload (autoload 'ormolu-format-on-save-mode "ormolu" nil t)
-(reformatter-define ormolu-format
-  :program ormolu-process-path
-  :args (append (if (and (not ormolu-no-cabal) buffer-file-name)
+;;;###autoload (autoload 'fourmolu-format-buffer "fourmolu" nil t)
+;;;###autoload (autoload 'fourmolu-format-region "fourmolu" nil t)
+;;;###autoload (autoload 'fourmolu-format-on-save-mode "fourmolu" nil t)
+(reformatter-define fourmolu-format
+  :program fourmolu-process-path
+  :args (append (if (and (not fourmolu-no-cabal) buffer-file-name)
                     `("--stdin-input-file" ,buffer-file-name)
-                  '("--no-cabal")) ormolu-extra-args)
-  :group 'ormolu
-  :lighter " Or"
-  :keymap ormolu-mode-map)
+                  '("--no-cabal")) fourmolu-extra-args)
+  :group 'fourmolu
+  :lighter " Fo"
+  :keymap fourmolu-mode-map)
 
-(defalias 'ormolu 'ormolu-format-buffer)
+(defalias 'fourmolu 'fourmolu-format-buffer)
 
-(provide 'ormolu)
+(provide 'fourmolu)
 
-;;; ormolu.el ends here
+;;; fourmolu.el ends here
